@@ -74,7 +74,7 @@ class IDACoreAPI(DisassemblerCoreAPI):
         super(IDACoreAPI, self).__init__()
         self._dockable_factory = {}
         self._init_version()
-
+        
     def _init_version(self):
 
         # retrieve IDA's version #
@@ -218,7 +218,8 @@ class IDAContextAPI(DisassemblerContextAPI):
 
             # fetch code segments
             seg = ida_segment.getseg(seg_address)
-            if seg.sclass != ida_segment.SEG_CODE:
+            print(f"Seg type : {seg.sclass}")
+            if seg.sclass != ida_segment.SEG_CODE and seg.sclass != ida_segment.SEG_DATA:
                 continue
 
             current_address = seg_address
@@ -227,11 +228,13 @@ class IDAContextAPI(DisassemblerContextAPI):
             # save the address of each instruction in the segment
             while current_address < end_address:
                 current_address = ida_bytes.next_head(current_address, end_address)
+                #print(f"Current address : {hex(current_address)}")
+                #print(f"ida_bytes.is_code() = {ida_bytes.is_code(ida_bytes.get_flags(current_address))}")
                 if ida_bytes.is_code(ida_bytes.get_flags(current_address)):
                     instruction_addresses.append(current_address)
 
-        #    print(f"Seg {seg.start_ea:08X} --> {seg.end_ea:08X} CODE")
-        #print(f" -- {len(instruction_addresses):,} instructions found")
+            print(f"Seg {seg.start_ea:08X} --> {seg.end_ea:08X} CODE")
+        print(f" -- {len(instruction_addresses):,} instructions found")
 
         return instruction_addresses
 
