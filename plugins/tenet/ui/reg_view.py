@@ -120,7 +120,7 @@ class RegisterArea(QtWidgets.QAbstractScrollArea):
     def sizeHint(self):
         width = self._default_width
         height = (len(self._reg_fields) + 2) * self._char_height # +2 for line break before IP, and after IP
-        return QtCore.QSize(width, height)
+        return QtCore.QSize(int(width), int(height))
 
     def _init_ctx_menu(self):
         """
@@ -277,7 +277,7 @@ class RegisterArea(QtWidgets.QAbstractScrollArea):
         width = self._reg_pos[0] + self._default_width
         height = len(self.model.registers) * self._char_height
 
-        return QtCore.QSize(width, height)
+        return QtCore.QSize(int(width),int( height))
 
     def wheelEvent(self, event):
         """
